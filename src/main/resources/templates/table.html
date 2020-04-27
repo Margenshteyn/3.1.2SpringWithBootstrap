@@ -1,0 +1,244 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin panel</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body class="bg-light">  <!--background light-->
+<div class="container-fluid"> <!--    контейнер полной ширины, охватывающего всю ширину области просмотра-->
+    <div class="row">
+        <div class="col bg-dark">  <!-- полоска во всю ширину -->
+            <nav class="navbar navbar-light bg-dark">
+                 <span class="navbar-text text-white">
+                     <b> <td th:utext="${user.email}"></td></b>
+                     <td>with roles:</td>
+                     <td th:utext="${user.roles}"></td>
+                 </span>
+                <a class="nav-link text-secondary font-weight-bold  text-right" href="/logout">Logout</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row h-100">
+        <div class="col-2  bg-white list-group">
+            <nav class="nav my-2 flex-column nav-pills">
+                <!-- flex-column класс для создания вертикальной навигации nav-pills - вкладки таблетки -->
+                <li class="nav-item">
+                    <a class="nav-link active" href="/admin/table">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user">User</a>
+                </li>
+            </nav>
+        </div>
+        <div class="col my-3 mx-3">
+
+            <div><h2>Admin panel</h2></div>
+            <ul class="nav nav-tabs"> <!--  навигационные вкладки с .nav-tabs -->
+                <li class="nav-item">
+                    <a class="nav-link active" href="/admin/table">Users table</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/newUser">New User</a>
+                </li>
+            </ul>
+
+            <div class="row">
+                <!--                <div class="col  mx-3 border border-light  " style="background-color: #f5f5f5  ">-->
+                <div class="col  mx-3 border border-light bg-light">
+                    <h5>All users</h5>
+
+                    <div class="row bg-white">
+                        <div class="col my-3">
+                            <table class="table table-striped">
+                                <!-- Класс .table-striped добавляет зебра-полоску к любой строке таблицы в tbody (недоступно в IE8) -->
+                                <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <!--  Текст в элементах <th> по умолчанию выделен жирным шрифтом и центрирован.   -->
+                                    <th scope="col">First Name</th> <!--   <th scope="col|row|colgroup|rowgroup"> -->
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Age</th>
+                                    <!-- Атрибут области указывает, является ли ячейка заголовка заголовком для столбца, строки или группы столбцов или строк. -->
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Role</th>
+                                    <th scope="col">Edit</th>
+                                    <th scope="col">Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr th:each="user : ${users}" th:id="${user.id}">
+
+                                    <td scope="row" th:utext="${user.id}"></td>
+
+                                    <td th:utext="${user.username}"></td>
+                                    <!-- вызывается по названию гетера в сущности! -->
+                                    <td th:utext="${user.lastname}"></td>
+                                    <td th:utext="${user.age}"></td>
+                                    <td th:utext="${user.email}"></td>
+                                    <td th:utext="${user.roles}"></td>
+                                    <form>
+                                        <td>
+                                            <button class="btn-sm btn-info" data-toggle="modal"
+                                                    th:data-user-id="${user.id}" data-target="#myModal" type="button">
+                                                Edit
+                                            </button>
+                                            <!-- data-toggle="modal" открывает модальное окно data-target="#myModal" указывает на идентификатор модального-->
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn-sm btn-danger " data-toggle="modal"
+                                                    th:data-user-delete="${user.id}" data-target="#myModalDelete">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </form>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Edit-->
+    <form>
+        <div id="myModalEdit" class="modal fade" role="dialog">
+            <!--  fadeКласс добавляет эффект перехода , который затухает  Атрибут role="dialog"улучшает доступность для людей, использующих программы чтения с экрана.-->
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- .modal-dialogКласс устанавливает правильную ширину и запас модальный-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Edit user</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>   <!--  Крестик(закрытие) &times;-->
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row  bg-white">
+                            <div class="col-6 mx-auto text-center font-weight-bold">
+                                ID     <!--   ID должен быть не активный!!  readonly disabled -->
+                                <input type="number" name="id" id="idInput" readonly class="form-control"></div>
+                        </div>
+                        <div class="row  bg-white">
+                            <div class="col-6 mx-auto text-center font-weight-bold my-2">
+                                First name
+                                <input type="text" name="firstname" id="firstNameInput" class="form-control"></div>
+                        </div>
+
+                        <div class="row  bg-white">
+                            <div class="col-6 mx-auto text-center font-weight-bold">
+                                Last name
+                                <input type="text" name="lastname" id="lastNameInput" class="form-control"></div>
+                        </div>
+                        <div class="row  bg-white">
+                            <div class="col-6 mx-auto text-center font-weight-bold my-2">
+                                Age
+                                <input type="number" name="age" id="ageInput" class="form-control"></div>
+                        </div>
+                        <div class="row  bg-white">
+                            <div class="col-6 mx-auto text-center font-weight-bold">
+                                Email
+                                <input type="email" name="email" id="emailInput" class="form-control"></div>
+                        </div>
+                        <div class="row  bg-white">
+                            <div class="col-6 mx-auto text-center font-weight-bold my-2">
+                                Password
+                                <input type="password" name="password" class="form-control"></div>
+                        </div>
+                        <div class="row  bg-white">
+                            <div class="col-6 mx-auto text-center font-weight-bold">
+                                Role
+                                <select class="custom-select form-control" multiple name="roles" id="roleInput" size="2">
+                                    <option>ADMIN</option>
+                                    &nbsp <!--   неразрывный пробел  -->
+                                    <option>USER</option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" formmethod="post" formaction="/admin/update" class="btn btn-primary">
+                            Edit
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- Modal Delete-->
+    <form>
+        <div id="myModalDelete" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalDelete">Delete user</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row  bg-white">
+                            <div class="col-6 mx-auto text-center font-weight-bold">
+                                ID
+                                <input type="number" name="id" id="id" readonly class="form-control"></div>
+                        </div>
+                        <div class="row  bg-white">
+                            <div class="col-6 mx-auto text-center font-weight-bold my-2">
+                                First name
+                                <input type="text" name="firstname" id="firstName" readonly class="form-control"></div>
+                        </div>
+
+                        <div class="row  bg-white">
+                            <div class="col-6 mx-auto text-center font-weight-bold">
+                                Last name
+                                <input type="text" name="lastname" id="lastName" readonly class="form-control"></div>
+                        </div>
+                        <div class="row  bg-white">
+                            <div class="col-6 mx-auto text-center font-weight-bold my-2">
+                                Age
+                                <input type="number" name="age" id="age" readonly class="form-control"></div>
+                        </div>
+                        <div class="row  bg-white">
+                            <div class="col-6 mx-auto text-center font-weight-bold">
+                                Email
+                                <input type="email" name="email" id="email" readonly class="form-control"></div>
+                        </div>
+                        <div class="row  bg-white">
+                            <div class="col-6 mx-auto text-center font-weight-bold">
+                                Role
+                                <select class="form-control" name="roles" readonly size="2">
+                                    <option>ADMIN</option>
+                                    <option>USER</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" formmethod="post" formaction="/admin/remove" class="btn btn-danger">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="/js/dataForModalWindow.js"> </script>>
+<!--<script src="/static/js/dataForModalWindow.js"></script>-->
+</body>
+</html>
