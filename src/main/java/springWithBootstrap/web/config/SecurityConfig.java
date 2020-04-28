@@ -20,8 +20,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @ComponentScan("springWithBootstrap")
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    /*@Autowired
-    @Qualifier(value = "userServiceImpl")*/
+
     private UserDetailsService userDetailsService;
 
     @Autowired
@@ -66,9 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").anonymous()
                 // защищенные URL
                 .antMatchers("/admin/*").access("hasAuthority('ADMIN')")
-                .antMatchers("/user").access("hasAuthority('USER')");
-
-
+//              .antMatchers("/user").access("hasAnyAuthority('USER', 'ADMIN')");
+                .antMatchers("/user").hasAnyAuthority("USER", "ADMIN");
     }
 
     @Bean

@@ -1,15 +1,15 @@
 $("#myModalEdit").on('show.bs.modal', function (e) {
-    var userId = $(e.relatedTarget).data('user-id');
+    let userId = $(e.relatedTarget).data('user-id');
 
-    var cols = $('#' + userId + ' td');
-    var firstname = $(cols[1]).text();
-    var id = $(cols[0]).text();
-    var lastname = $(cols[2]).text();
-    var email = $(cols[4]).text();
-    var age = $(cols[3]).text();
-    var roles = $(cols[5]).text();
+    let cols = $('#' + userId + ' td');
+    let firstname = $(cols[1]).text(); // переменной firstname присваиваю текст, который в 1й td
+    let id = $(cols[0]).text();
+    let lastname = $(cols[2]).text();
+    let email = $(cols[4]).text();
+    let age = $(cols[3]).text();
+    let roles = $(cols[5]).text();
 
-    $('#firstNameInput').val(firstname); // Установите атрибут значения: firstname
+    $('#firstNameInput').val(firstname); // Установить значения: firstname для инпута с id firstNameInput
     $('#lastNameInput').val(lastname);
     $('#emailInput').val(email);
     $('#idInput').val(id);
@@ -19,15 +19,15 @@ $("#myModalEdit").on('show.bs.modal', function (e) {
 });
 
 $("#myModalDelete").on('show.bs.modal', function (e) {
-    var user = $(e.relatedTarget).data('user-delete');
+    let user = $(e.relatedTarget).data('user-delete');
 
-    var col = $('#' + user + ' td');
-    var firstname = $(col[1]).text();
-    var id = $(col[0]).text();
-    var lastname = $(col[2]).text();
-    var email = $(col[4]).text();
-    var age = $(col[3]).text();
-    var roles = $(col[5]).text();
+    let col = $('#' + user + ' td');
+    let firstname = $(col[1]).text();
+    let id = $(col[0]).text();
+    let lastname = $(col[2]).text();
+    let email = $(col[4]).text();
+    let age = $(col[3]).text();
+    let roles = $(col[5]).text();
 
     $('#firstName').val(firstname);
     $('#lastName').val(lastname);
@@ -37,7 +37,7 @@ $("#myModalDelete").on('show.bs.modal', function (e) {
 
 
 });
-
+// удаляет все данные из формы
 /*$("#myModalEdit").on('hidden.bs.modal', function () {
     var form = $(this).find('form');
     form[0].reset();

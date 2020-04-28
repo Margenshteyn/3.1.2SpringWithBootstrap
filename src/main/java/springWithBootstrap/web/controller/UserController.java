@@ -54,7 +54,7 @@ public class UserController {
 
     @GetMapping(value = {"/", "/login"})
     public String loginPage() {
-        userService.addFirstAdminAndUser();
+//        userService.addFirstAdminAndUser();
         return "login";
     }
 
